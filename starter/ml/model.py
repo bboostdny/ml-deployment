@@ -1,3 +1,5 @@
+import pandas as pd
+
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier
 
@@ -62,3 +64,35 @@ def inference(model, X):
     """
 
     return model.predict(X)
+
+
+def compute_metrics_on_slices_categorical(df, cat_features, metrics_output_path='../../model/metrics_slices.txt'):
+    """
+    Computes metrics (precision, recall, fbeta) on slices of categorical columns.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe containing features, predictions and ground truth
+    cat_features
+        List of categorical column names
+    Returns
+    -------
+
+    """
+    df = df.fillna('Empty')
+    df_metrics = pd.DataFrame(columns=['cat_feature', 'slice', 'precision',
+                                       'recall', 'fbeta', 'support'])
+
+    for cat_feature in cat_features:
+        # Retrieve list of possible slices
+        slices = df[cat_feature].unique()
+        for slice in slices:
+            df_tmp = df[df[cat_feature] == slice]
+            # Calculate metrics for a slice
+            precision, recall, fbeta = compute_model_metrics(df_tmp['y_true'], df_tmp['y_pred'])
+            support = df_tmp.shape[0]
+            df_metrics.loc[len(df_metrics)] = [cat_feature, slice, round(precision, 4),
+                                               round(recall, 4), round(fbeta, 4), round(support, 4)]
+
+    df_metrics.to_csv(metrics_output_path, sep='\t', index=False)
+    print(f'Metrics calculated on slices of categorical columns have been saved to {metrics_output_path}')
