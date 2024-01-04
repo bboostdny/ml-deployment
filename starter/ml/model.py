@@ -83,6 +83,10 @@ def compute_metrics_on_slices_categorical(df, cat_features, metrics_output_path=
     df_metrics = pd.DataFrame(columns=['cat_feature', 'slice', 'precision',
                                        'recall', 'fbeta', 'support'])
 
+    precision, recall, fbeta = compute_model_metrics(df['y_true'], df['y_pred'])
+    df_metrics.loc[len(df_metrics)] = ['overall', 'overall', round(precision, 4),
+                                       round(recall, 4), round(fbeta, 4), df.shape[0]]
+
     for cat_feature in cat_features:
         # Retrieve list of possible slices
         slices = df[cat_feature].unique()
@@ -92,7 +96,7 @@ def compute_metrics_on_slices_categorical(df, cat_features, metrics_output_path=
             precision, recall, fbeta = compute_model_metrics(df_tmp['y_true'], df_tmp['y_pred'])
             support = df_tmp.shape[0]
             df_metrics.loc[len(df_metrics)] = [cat_feature, slice, round(precision, 4),
-                                               round(recall, 4), round(fbeta, 4), round(support, 4)]
+                                               round(recall, 4), round(fbeta, 4), support]
 
     df_metrics.to_csv(metrics_output_path, sep='\t', index=False)
     print(f'Metrics calculated on slices of categorical columns have been saved to {metrics_output_path}')
