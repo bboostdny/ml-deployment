@@ -1,15 +1,16 @@
 # Script to train machine learning model.
+import os
 import pandas as pd
 import pickle
 from sklearn.model_selection import train_test_split
-from .ml.data import process_data
-from .ml.model import train_model, inference, compute_metrics_on_slices_categorical
+from ml.data import process_data
+from ml.model import train_model, inference, compute_metrics_on_slices_categorical
 
-# Add the necessary imports for the starter code.
+# Add the necessary imports for the src code.
 # Add code to load in the data.
-input_data_path = '../data/census.csv'
-model_path = '../model/'
-metrics_output_path = '../model/metrics_slices.txt'
+input_data_path = 'data/census.csv'
+model_path = 'model/'
+metrics_output_path = 'model/metrics_slices.txt'
 data = pd.read_csv(input_data_path)
 data = data.drop("fnlgt", axis=1)
 
