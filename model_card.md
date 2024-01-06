@@ -15,7 +15,7 @@ To use the data for training a One Hot Encoder was used on the features and a la
 ## Evaluation Data
 Model has been evaluated on a subset of training dataset extracted in training process.
 ## Metrics
-The model was evaluated using F1 score. The value is 0.6744.
+The model was evaluated using F1, precision and recall. The values are 0.6595, 0.7037 and 0.6206 respectively.
 
 ## Ethical Considerations
 The model considers only a part of aspects that impact the income level of a particular person and therefore should not be used as 
