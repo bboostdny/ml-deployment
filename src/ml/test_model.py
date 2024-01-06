@@ -10,7 +10,8 @@ from sklearn.ensemble import RandomForestClassifier
 @pytest.fixture
 def data():
     """ Retrieve and process training dataset."""
-    df = pd.read_csv('../../data/census.csv')
+    df = pd.read_csv('data/census.csv')
+    df = df.drop("fnlgt", axis=1)
     cat_features = [
         "workclass",
         "education",
@@ -22,9 +23,7 @@ def data():
         "native-country",
     ]
 
-    X_train, y_train, encoder, lb = process_data(
-        df, categorical_features=cat_features, label="salary", training=True
-    )
+    X_train, y_train, _, _ = process_data(df, cat_features, label='salary', training=True)
 
     return X_train, y_train
 
@@ -32,7 +31,7 @@ def data():
 @pytest.fixture
 def trained_model():
     """ Load trained model"""
-    with open('../../model/model.pkl', 'rb') as file:
+    with open('model/model.pkl', 'rb') as file:
         model = pickle.load(file)
 
     return model
