@@ -43,27 +43,26 @@ class Data(BaseModel):
     hours_per_week: int = Field(alias="hours-per-week")
     native_country: str = Field(alias="native-country")
 
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
+    class Config:
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example":
                 {
                     "age": 45,
                     "workclass": "Private",
                     "education": "Prof-school",
-                    "education_num": 15,
-                    "marital_status": "Married-civ-spouse",
+                    "education-num": 15,
+                    "marital-status": "Married-civ-spouse",
                     "occupation": "Exec-managerial",
                     "relationship": "Husband",
                     "race": "White",
                     "sex": "Male",
-                    "capital_gain": 8564,
-                    "capital_loss": 0,
-                    "hours_per_week": 40,
+                    "capital-gain": 8564,
+                    "capital-loss": 0,
+                    "hours-per-week": 40,
                     "native-country": "United-States"
                 }
-            ]
-        }
-    }
+            }
 
 
 @app.get("/")
